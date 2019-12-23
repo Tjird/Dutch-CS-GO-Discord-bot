@@ -48,6 +48,7 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
     const author = message.author;
     const guild = message.guild;
     const member = message.member;
+    const roles = member.roles;
     let mTemp;
 
     if (!args[0] || args[0] == undefined) return channel.send("Je moet wel een friend code invullen anders kan ik jou geen rank geven 🤷 " + author);
@@ -88,7 +89,6 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
 
         steamFriends.removeFriend(SteamID64);
 
-        const roles = member.roles;
         const rankRole = getRole(pData.ranking.rank_id);
 
         if (roles.find(r => r.id === rankRole)) return mTemp.edit(`Je CS:GO rank is ongewijzigd. Probeer het later nog eens wanneer je een nieuwe rank hebt. ${author}`);
