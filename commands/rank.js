@@ -48,6 +48,7 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
     const author = message.author;
     const guild = message.guild;
     const member = message.member;
+    let mTemp;
 
     if (!args[0] || args[0] == undefined) return channel.send("Je moet wel een friend code invullen anders kan ik jou geen rank geven 🤷 " + author);
 
@@ -61,7 +62,8 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
     if (!SteamID3.isValid()) return channel.send("De friend code die jij hebt gestuurd is niet legitiem " + author);
 
     steamFriends.addFriend(SteamID64);
-    channel.send(`Een friend request is naar je toe gestuurd, mijn username is: \`Tjird BOT\`.\nOver 60 seconden worden jou gegevens nagekeken, hiervoor is het accepteren van het friend request nodig... ${author}`);
+    channel.send(`Een friend request is naar je toe gestuurd, mijn username is: \`Tjird BOT\`.\nOver 60 seconden worden jou gegevens nagekeken, hiervoor is het accepteren van het friend request nodig... ${author}`)
+        .then(m => mTemp = m);
 
     await sleep(60000);
 
@@ -73,21 +75,32 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
         const pData = data.account_profiles[0];
 
         if (pData.account_id !== AccountID) return;
-        if (pData.ranking === null) return channel.send(`Je moet het friend request wel accepteren knuppel. Probeer het later nog eens... ${author}`);
+        if (pData.ranking === null) {
+            if (roles.find(r => r.id === "656567790484062238")) return mTemp.edit(`Je moet het friend request wel accepteren knuppel. Heb je dit wel gedaan? Ga verdomme dan competitive spelen!\nJe krijgt hierdoor een \`No Rank\` role alleen in jou geval heb je deze al... ${author}`);
+
+            mTemp.edit(`Je moet het friend request wel accepteren knuppel. Heb je dit wel gedaan? Ga verdomme dan competitive spelen!\nJe krijgt hierdoor een \`No Rank\` role. ${author}`);
+            member.addRole("656567790484062238")
+                .catch(error => {
+                    console.log(error);
+                    channel.send(`Je rank kon niet veranderd worden. Deze zou moeten worden verzet naar \`No Rank\`. <@656597707896651829> <@656598790890848259>`);
+                });
+        }
 
         steamFriends.removeFriend(SteamID64);
 
         const roles = member.roles;
         const rankRole = getRole(pData.ranking.rank_id);
 
-        if (roles.find(r => r.id === rankRole)) return channel.send(`Je CS:GO rank is ongewijzigd. Probeer het later nog eens wanneer je een nieuwe rank hebt. ${author}`);
+        if (roles.find(r => r.id === rankRole)) return mTemp.edit(`Je CS:GO rank is ongewijzigd. Probeer het later nog eens wanneer je een nieuwe rank hebt. ${author}`);
 
         for (let role of roles) {
-            if (!rolesList.includes(role[0])) continue;
+            if (rolesList.includes(role[0])) continue;
 
             try {
-                await member.removeRole(role[0]);
-            } catch (e) {}
+                await member.removeRole(`${role[0]}`);
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         member.addRole(`${rankRole}`)
@@ -96,7 +109,7 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
             })
             .catch(error => {
                 console.log(error);
-                channel.send(`Je kan kon niet veranderd worden. Deze zou moeten worden verzet naar \`${CSGO.Rank.getString(pData.ranking.rank_id)}\`. <@656597707896651829> <@656598790890848259>`);
+                channel.send(`Je rank kon niet veranderd worden. Deze zou moeten worden verzet naar \`${CSGO.Rank.getString(pData.ranking.rank_id)}\`. <@656597707896651829> <@656598790890848259>`);
             });
     })
 
