@@ -10,6 +10,7 @@
     "enmap": "^5.2.3",
     "fs": "0.0.1-security",
     "steam": "^1.4.1",
+    "steam-resources": "^1.0.0",
     "steamid": "^1.1.3"
   },
   "devDependencies": {},

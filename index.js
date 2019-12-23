@@ -51,7 +51,15 @@ steamClient.on('logOnResponse', () => {
         discord.login(process.env.DISCORD_TOKEN);
     });
 
+    CSGO.on("error", (error) => {
+        console.log(error);
+    });
+
     CSGO.launch();
+});
+
+steamClient.on("error", (error) => {
+    console.log(error);
 });
 
 steamClient.connect();
