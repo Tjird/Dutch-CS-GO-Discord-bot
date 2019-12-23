@@ -105,11 +105,11 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
 
         member.addRole(`${rankRole}`)
             .then(() => {
-                channel.send(`Je rank is gewijzigd naar \`${CSGO.Rank.getString(pData.ranking.rank_id)}\`. ${author}`);
+                mTemp.edit(`Je rank is gewijzigd naar \`${CSGO.Rank.getString(pData.ranking.rank_id)}\`. ${author}`);
             })
             .catch(error => {
                 console.log(error);
-                channel.send(`Je rank kon niet veranderd worden. Deze zou moeten worden verzet naar \`${CSGO.Rank.getString(pData.ranking.rank_id)}\`. <@656597707896651829> <@656598790890848259>`);
+                mTemp.edit(`Je rank kon niet veranderd worden. Deze zou moeten worden verzet naar \`${CSGO.Rank.getString(pData.ranking.rank_id)}\`. <@656597707896651829> <@656598790890848259>`);
             });
     })
 
