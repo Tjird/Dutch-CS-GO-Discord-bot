@@ -85,7 +85,7 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
 
             mTemp.edit(`Je moet het friend request wel accepteren knuppel. Heb je dit wel gedaan? Ga verdomme dan competitive spelen!\nJe krijgt hierdoor een \`No Rank\` role. ${author}`);
             return member.addRole("656567790484062238")
-                .then(() => {
+                .then(async () => {
                     for (let role of roles) {
                         if (!rolesList.includes(role[1].id)) continue;
 
