@@ -62,7 +62,11 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
 
     if (!SteamID3.isValid()) return channel.send("De friend code die jij hebt gestuurd is niet legitiem " + author);
 
-    steamFriends.addFriend(SteamID64);
+    steamFriends.addFriend(SteamID64)
+        .catch(() => {
+            return channel.send("Er ging iets fout bij het versturen van een friend request. Probeer het later nog eens...");
+        });
+
     channel.send(`Een friend request is naar je toe gestuurd, mijn username is: \`Tjird BOT\`.\nOver 60 seconden worden jou gegevens nagekeken, hiervoor is het accepteren van het friend request nodig... ${author}`)
         .then(m => mTemp = m);
 
@@ -80,7 +84,18 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
             if (roles.find(r => r.id === "656567790484062238")) return mTemp.edit(`Je moet het friend request wel accepteren knuppel. Heb je dit wel gedaan? Ga verdomme dan competitive spelen!\nJe krijgt hierdoor een \`No Rank\` role alleen in jou geval heb je deze al... ${author}`);
 
             mTemp.edit(`Je moet het friend request wel accepteren knuppel. Heb je dit wel gedaan? Ga verdomme dan competitive spelen!\nJe krijgt hierdoor een \`No Rank\` role. ${author}`);
-            member.addRole("656567790484062238")
+            return member.addRole("656567790484062238")
+                .then(() => {
+                    for (let role of roles) {
+                        if (!rolesList.includes(role[1].id)) continue;
+
+                        try {
+                            await member.removeRole(`${role[1].id}`);
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    }
+                })
                 .catch(error => {
                     console.log(error);
                     channel.send(`Je rank kon niet veranderd worden. Deze zou moeten worden verzet naar \`No Rank\`. <@656597707896651829> <@656598790890848259>`);
@@ -94,10 +109,10 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
         if (roles.find(r => r.id === rankRole)) return mTemp.edit(`Je CS:GO rank is ongewijzigd. Probeer het later nog eens wanneer je een nieuwe rank hebt. ${author}`);
 
         for (let role of roles) {
-            if (rolesList.includes(role[0])) continue;
+            if (!rolesList.includes(role[1].id)) continue;
 
             try {
-                await member.removeRole(`${role[0]}`);
+                await member.removeRole(`${role[1].id}`);
             } catch (e) {
                 console.log(e);
             }
