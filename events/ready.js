@@ -13,5 +13,5 @@ module.exports = (client) => {
         client.user.setActivity(`${usercount.memberCount} users`, {
             type: "WATCHING"
         });
-    }, 1000);
+    }, 300000);
 }
