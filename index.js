@@ -19,6 +19,8 @@ steamClient.on('connected', () => {
 
 steamClient.on('logOnResponse', () => {
     console.log("Steam is ready.");
+
+    CSGO.launch();
 });
 
 steamClient.on("error", (error) => {
@@ -71,4 +73,4 @@ fs.readdir("./commands/", (err, files) => {
     });
 });
 
-Promise.all([steamClient.connect(), CSGO.launch(), discord.login(process.env.DISCORD_TOKEN)]);
+Promise.all([steamClient.connect(), discord.login(process.env.DISCORD_TOKEN)]);
