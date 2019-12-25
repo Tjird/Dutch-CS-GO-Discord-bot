@@ -62,10 +62,11 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
 
     if (!SteamID3.isValid()) return channel.send("De friend code die jij hebt gestuurd is niet legitiem " + author);
 
-    steamFriends.addFriend(SteamID64)
-        .catch(() => {
-            return channel.send("Er ging iets fout bij het versturen van een friend request. Probeer het later nog eens...");
-        });
+    try {
+        steamFriends.addFriend(SteamID64);
+    } catch (e) {
+        return channel.send("Er ging iets fout bij het versturen van een friend request. Probeer het later nog eens...");
+    }
 
     channel.send(`Een friend request is naar je toe gestuurd, mijn username is: \`Tjird BOT\`.\nOver 60 seconden worden jou gegevens nagekeken, hiervoor is het accepteren van het friend request nodig... ${author}`)
         .then(m => mTemp = m);
