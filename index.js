@@ -42,6 +42,8 @@ CSGO.on("ready", () => {
 
 CSGO.on("error", (error) => {
     console.log(error);
+
+    steamClient.connect();
 });
 
 // Discord part
