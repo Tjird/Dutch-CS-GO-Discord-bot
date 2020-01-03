@@ -1,25 +1,25 @@
 const SteamID = require('steamid');
 
 const rolesList = [
-    656567790484062238, // No rank
-    656567577279201301, // Silver 1
-    656568905422077972, // Silver 2
-    656569577681059884, // Silver 3
-    656569974931980288, // Silver 4
-    656570119983595521, // Silver Elite
-    656570202284359680, // Silver Elite Master
-    656570345477898241, // Gold Nova 1
-    656570472833482762, // Gold Nova 2
-    656570572829884417, // Gold Nova 3
-    656570746453360653, // Gold Nova Master
-    656570847846203424, // Master Guardian 1
-    656570914586099713, // Master Guardian 2
-    656572727678861332, // Master Guardian Elite
-    656572837296865291, // Distinguished Master Guardian
-    656573090528231426, // Legendary Eagle
-    656573166709112842, // Legendary Eagle Master
-    656573293276692520, // Supreme Master First Class
-    656573695233622016 // Global Elite CS GO
+    "656567790484062238", // No rank
+    "656567577279201301", // Silver 1
+    "656568905422077972", // Silver 2
+    "656569577681059884", // Silver 3
+    "656569974931980288", // Silver 4
+    "656570119983595521", // Silver Elite
+    "656570202284359680", // Silver Elite Master
+    "656570345477898241", // Gold Nova 1
+    "656570472833482762", // Gold Nova 2
+    "656570572829884417", // Gold Nova 3
+    "656570746453360653", // Gold Nova Master
+    "656570847846203424", // Master Guardian 1
+    "656570914586099713", // Master Guardian 2
+    "656572727678861332", // Master Guardian Elite
+    "656572837296865291", // Distinguished Master Guardian
+    "656573090528231426", // Legendary Eagle
+    "656573166709112842", // Legendary Eagle Master
+    "656573293276692520", // Supreme Master First Class
+    "656573695233622016" // Global Elite CS GO
 ];
 const ranksList = {
     0: "656567790484062238",
@@ -119,7 +119,7 @@ exports.run = async (client, message, args, CSGO, steamFriends) => {
             }
         }
 
-        member.addRole(`${rankRole}`)
+        member.addRole(rankRole)
             .then(() => {
                 mTemp.edit(`Je rank is gewijzigd naar \`${CSGO.Rank.getString(pData.ranking.rank_id)}\`. ${author}`);
             })
