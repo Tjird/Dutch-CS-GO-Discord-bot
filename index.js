@@ -25,6 +25,13 @@ steamClient.on('logOnResponse', () => {
 
 steamClient.on("error", (error) => {
     console.log(error);
+
+    try {
+        steamClient.disconnect();
+        steamClient.connect();
+    } catch (e) {
+        console.log(e);
+    }
 });
 
 steamClient.on("loggedOff", () => {
@@ -34,7 +41,7 @@ steamClient.on("loggedOff", () => {
 // CSGO part
 
 const csgo = require('csgo');
-const CSGO = new csgo.CSGOClient(steamUser, steamGC, false);
+const CSGO = new csgo.CSGOClient(steamUser, steamGC, true);
 
 CSGO.on("ready", () => {
     console.log("CSGO is ready.");
@@ -43,7 +50,12 @@ CSGO.on("ready", () => {
 CSGO.on("error", (error) => {
     console.log(error);
 
-    steamClient.connect();
+    try {
+        steamClient.disconnect();
+        steamClient.connect();
+    } catch (e) {
+        console.log(e);
+    }
 });
 
 // Discord part
